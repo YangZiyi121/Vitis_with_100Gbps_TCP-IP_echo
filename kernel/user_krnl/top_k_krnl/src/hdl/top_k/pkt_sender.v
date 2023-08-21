@@ -113,7 +113,7 @@ module pkt_sender (
 
     always @(*) begin
         metadata_rx_TDATA = {16'd64, pkt_rx_TDATA[512+16-1 + 1 : 512 + 1]}; // Packet Size: 64 Byte
-        payload_rx_TDATA = {pkt_rx_TDATA[511 + 1:32], metadata_rx_TDATA}; //tlast + tdata
+        payload_rx_TDATA = pkt_rx_TDATA[511 + 1:0]; //tlast + tdata
 
         pkt_rx_TREADY = metadata_rx_TREADY & payload_rx_TREADY;
         
