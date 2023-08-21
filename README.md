@@ -1,31 +1,24 @@
-<h2>Top K for Alveo with Vitis 100Gbps TCP Networking</h2>
+<h2>Echo workload for Alveo with Vitis 100Gbps TCP Networking</h2>
 
-This project provides a stream based integer top k sorting using a 100Gbps network. It is achieved by expanding the [100Gbps TCP/IP stack repository](https://github.com/fpgasystems/Vitis_with_100Gbps_TCP-IP) with a custom user kernel.
+This project provides a baseline for abstract overhead measurement using a 100Gbps network. It is achieved by expanding the [100Gbps TCP/IP stack repository](https://github.com/fpgasystems/Vitis_with_100Gbps_TCP-IP) with a custom user kernel.
 
-<h3>Top K User Kernel Design</h3>
-
-This design refers to the paper [Histograms as a side effect of data movement for big data](https://dl.acm.org/doi/abs/10.1145/2588555.2612174)
-
-![Architecture](/img/top_k_arch.png)
 
 <h3>Functionality</h3>
 
-The kernel is able to accumulately sort 32-bit integers sent with TCP packets. The user needs to send TCP packets that are multiples of 64 bytes in size, since the dataline is 64 bytes. The kernel will return the accumulated top-K results. 
+The kernel will echo back the last dataline (512-bit) of the packet. 
 
-<h3>Runtime configurable K</h3>
-The hardware architeture is initialized with 16 top-k units, and each unit has an enable signal. To configure the K size, the first dataline (64 bytes) in the first packet should be sent in the following format. The 16-bit in the brackets specify the enable signal for each unit. For example, to have top-4 sorting, the 16-bit should be [0f00], which enables four units. 
+<h3>How to invoke</h3>
 
+Please send a packet which has a content size multiples of 512-bit (64-byte)
 
 ```python
 
-#top-8 sorting first packet for initialization
+#3 * 512-bit packet
+0000000800000002000000030000000400000006000000060000000300000008000000090000000a0000000b0000000c0000000d0000000e0000001f0000002e
+01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+0000000900000002000000030000000400000006000000060000000300000008000000090000000a0000000b0000000c0000000d0000000e0000001f0000002e
 
-ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-sixteen 32-bit integers in the next dataline 
 ```
-
-
 
 
 <h3>Build and Run</h3>
@@ -51,9 +44,18 @@ cd ../
 make all TARGET=hw DEVICE=/opt/xilinx/platforms/xilinx_u280_xdma_201920_3/xilinx_u280_xdma_201920_3.xpfm USER_KRNL=top_k_krnl USER_KRNL_MODE=rtl NETH=4
 ```
 
-**Testing Script**
+<h3>Power profile</h3>
 
-The script used to conduct the experiment is in directory **script_for_testing**. **test.py** is for generating concurrent requests and **script_for_wireshark.py** is for capturing packets with Tshark. To run both, use cmd
-```
-./run.sh
-```
+1. After compilation, copy **xrt.ini** under the folder that contains the .xclbin file (build_dir.hw.xilinx_u280_xdma_201920_3)
+2. Run the host code using cmd
+
+  ```
+./host/host build_dir.hw.xilinx_u280_xdma_201920_3/network.xclbin
+  ```
+3. Open the project with vitis_analyzer, the report will be shown
+   
+**Reference**
+
+[Profile document](https://docs.xilinx.com/r/en-US/ug1393-vitis-application-acceleration/Enabling-Profiling-in-Your-Application)
+
+[Visualisation result](https://xilinx.github.io/xbtest/doc/main/user-guide/build/html/docs/usage/result-visualisation.html)
