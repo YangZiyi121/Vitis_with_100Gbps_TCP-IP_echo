@@ -121,7 +121,8 @@ module pkt_receiver (
 
     always @(*) begin
         m_axis_read_package_TDATA = notif_tx_TDATA[31:0];
-        if (notif_tx_TVALID == 1'b1 && notif_tx_TDATA[31:16] != 16'd64 && notif_tx_TDATA[31:16] != 16'd128 && notif_tx_TDATA[31:16] != 16'd192) begin 
+        if (notif_tx_TVALID == 1'b1 && notif_tx_TDATA[31:16] != 16'd64 && notif_tx_TDATA[31:16] != 16'd128 && notif_tx_TDATA[31:16] != 16'd192 && notif_tx_TDATA[31:16] != 16'd256 && notif_tx_TDATA[31:16] != 16'd320 &&  notif_tx_TDATA[31:16] != 16'd384 && notif_tx_TDATA[31:16] != 16'd448 && notif_tx_TDATA[31:16] != 16'd512 && notif_tx_TDATA[31:16] != 16'd576 &&  notif_tx_TDATA[31:16] != 16'd640 && notif_tx_TDATA[31:16] != 16'd768 &&  notif_tx_TDATA[31:16] != 16'd832 && notif_tx_TDATA[31:16] != 16'd896 &&  notif_tx_TDATA[31:16] != 16'd960 && notif_tx_TDATA[31:16] != 16'd1024 &&
+notif_tx_TDATA[31:16] != 16'd1088) begin 
             // discard rx_data that are larger than 4096bytes
             // also handle conn_close notification (msg size = 0)
             notif_tx_TREADY = 1'b1;

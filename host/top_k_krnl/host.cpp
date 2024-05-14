@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
     auto fileBuf = xcl::read_binary_file(binaryFile);
     cl::Program::Binaries bins{{fileBuf.data(), fileBuf.size()}};
     int valid_device = 0;
-    for (unsigned int i = 1; i < devices.size(); i++) {
+    for (unsigned int i = 0; i < devices.size(); i++) {
         auto device = devices[i];
         // Creating Context and Command Queue for selected Device
         OCL_CHECK(err, context = cl::Context({device}, NULL, NULL, NULL, &err));
@@ -118,7 +118,7 @@ int main(int argc, char **argv) {
     uint32_t timeInSeconds = 2;
     //uint32_t baseIpAddr = 0x0A488A13; //NIC connected to U280
     //uint32_t baseIpAddr = 0x0A480A0B; //board IP U280
-    uint32_t baseIpAddr = 0x0A488A12; //IP of U280 10.72.138.32
+    uint32_t baseIpAddr = 0xac180003; //IP of U280 172.24.0.3
 
     int ip [4]; 
 	
