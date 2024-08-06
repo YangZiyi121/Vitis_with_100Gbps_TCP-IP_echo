@@ -149,7 +149,8 @@ module tcp_top_loopback #(parameter IS_SIM = 0)
         .clk(clk),
         .rst(reset),
         .pkt_rx_TDATA(pkt_TDATA[512+32-1 + 1: 0]), //metadata + tlast + tdata
-        .pkt_rx_TVALID(pkt_TVALID & pkt_TDATA[512]),
+        //.pkt_rx_TVALID(pkt_TVALID & pkt_TDATA[512]),
+        .pkt_rx_TVALID(pkt_TVALID),
         .pkt_rx_TREADY(pkt_TREADY),
         .s_axis_tx_status_TDATA(s_axis_tx_status_TDATA),
         .s_axis_tx_status_TVALID(s_axis_tx_status_TVALID),
