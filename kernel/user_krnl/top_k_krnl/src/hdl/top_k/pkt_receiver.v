@@ -123,8 +123,8 @@ module pkt_receiver (
         m_axis_read_package_TDATA = notif_tx_TDATA[31:0];
         if (notif_tx_TVALID == 1'b1 && notif_tx_TDATA[31:16] != 16'd64 && notif_tx_TDATA[31:16] != 16'd128 && notif_tx_TDATA[31:16] != 16'd192 && notif_tx_TDATA[31:16] != 16'd256 && notif_tx_TDATA[31:16] != 16'd320 &&  notif_tx_TDATA[31:16] != 16'd384 && notif_tx_TDATA[31:16] != 16'd448 && notif_tx_TDATA[31:16] != 16'd512 && notif_tx_TDATA[31:16] != 16'd576 &&  notif_tx_TDATA[31:16] != 16'd640 && notif_tx_TDATA[31:16] != 16'd768 &&  notif_tx_TDATA[31:16] != 16'd832 && notif_tx_TDATA[31:16] != 16'd896 &&  notif_tx_TDATA[31:16] != 16'd960 && notif_tx_TDATA[31:16] != 16'd1024 &&
 notif_tx_TDATA[31:16] != 16'd1088 && notif_tx_TDATA[31:16] != 16'd1152 && notif_tx_TDATA[31:16] != 16'd1216
-&& notif_tx_TDATA[31:16] != 16'd1280 && notif_tx_TDATA[31:16] != 16'd1344 && notif_tx_TDATA[31:16] != 16'd1408 && notif_tx_TDATA[31:16] != 16'd1472 && notif_tx_TDATA[31:16] != 16'd1536 && notif_tx_TDATA[31:16] != 16'd1600 && notif_tx_TDATA[31:16] != 16'd1664 && notif_tx_TDATA[31:16] != 16'd1728 && notif_tx_TDATA[31:16] != 16'd1792 && notif_tx_TDATA[31:16] != 16'd1856 && notif_tx_TDATA[31:16] != 16'd1920 && notif_tx_TDATA[31:16] != 16'd1984 && notif_tx_TDATA[31:16] != 16'd2048) begin 
-            // discard rx_data that are larger than 4096bytes
+&& notif_tx_TDATA[31:16] != 16'd1280 && notif_tx_TDATA[31:16] != 16'd1344 && notif_tx_TDATA[31:16] != 16'd1408 && notif_tx_TDATA[31:16] != 16'd1472 && notif_tx_TDATA[31:16] != 16'd1536) begin 
+            // discard rx_data that are larger than 1536B
             // also handle conn_close notification (msg size = 0)
             notif_tx_TREADY = 1'b1;
             m_axis_read_package_TVALID = 1'b0;

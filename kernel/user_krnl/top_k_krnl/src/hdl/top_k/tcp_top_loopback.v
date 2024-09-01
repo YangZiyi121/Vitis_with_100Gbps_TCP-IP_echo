@@ -94,7 +94,6 @@ module tcp_top_loopback #(parameter IS_SIM = 0)
     assign m_axis_listen_port_TDATA  = axis_listen_port_data;
     assign m_axis_listen_port_TVALID = axis_listen_port_valid;
 
-
     //open up server port (2888)
     always @(posedge clk)
     begin
@@ -148,7 +147,7 @@ module tcp_top_loopback #(parameter IS_SIM = 0)
     pkt_sender pkt_sender_inst(
         .clk(clk),
         .rst(reset),
-        .pkt_rx_TDATA(pkt_TDATA[512+32-1 + 1: 0]), //metadata + tlast + tdata
+        .pkt_rx_TDATA({pkt_TDATA[512+32-1 + 1: 0]}), //size + metadata + tlast + tdata
         //.pkt_rx_TVALID(pkt_TVALID & pkt_TDATA[512]),
         .pkt_rx_TVALID(pkt_TVALID),
         .pkt_rx_TREADY(pkt_TREADY),
