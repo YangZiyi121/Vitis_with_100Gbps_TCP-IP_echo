@@ -53,7 +53,7 @@ module pkt_sender (
     //FIFO for storing status
     nukv_fifogen #(
         .DATA_SIZE(1),
-        .ADDR_BITS(5)
+        .ADDR_BITS(12)
     ) fifo_status (
         .clk(clk),
         .rst(rst),
@@ -78,7 +78,7 @@ module pkt_sender (
     //FIFO for storing payload
     nukv_fifogen #(
         .DATA_SIZE(512 + 1), //tlast + tdata
-        .ADDR_BITS(5)
+        .ADDR_BITS(12)
     ) fifo_payload (
         .clk(clk),
         .rst(rst),
@@ -115,7 +115,7 @@ module pkt_sender (
 //    ); 
     nukv_fifogen #(
         .DATA_SIZE(32),
-        .ADDR_BITS(5)
+        .ADDR_BITS(12)
     ) fifo_metadata (
         .clk(clk),
         .rst(rst),

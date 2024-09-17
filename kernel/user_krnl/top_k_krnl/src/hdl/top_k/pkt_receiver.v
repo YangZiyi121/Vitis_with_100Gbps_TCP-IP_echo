@@ -48,7 +48,7 @@ module pkt_receiver (
 
     nukv_fifogen #(
         .DATA_SIZE(88),
-        .ADDR_BITS(5)
+        .ADDR_BITS(12)
     ) fifo_notif (
         .clk(clk),
         .rst(rst),
@@ -80,7 +80,7 @@ module pkt_receiver (
 
     nukv_fifogen #(
         .DATA_SIZE(512 + 1), //tlast + tdata
-        .ADDR_BITS(5)
+        .ADDR_BITS(12)
     ) fifo_payload (
         .clk(clk),
         .rst(rst),
@@ -103,7 +103,7 @@ module pkt_receiver (
 
     nukv_fifogen #(
         .DATA_SIZE(88),
-        .ADDR_BITS(5)
+        .ADDR_BITS(12)
     ) fifo_metadata (
         .clk(clk),
         .rst(rst),
@@ -121,9 +121,7 @@ module pkt_receiver (
 
     always @(*) begin
         m_axis_read_package_TDATA = notif_tx_TDATA[31:0];
-        if (notif_tx_TVALID == 1'b1 && notif_tx_TDATA[31:16] != 16'd64 && notif_tx_TDATA[31:16] != 16'd128 && notif_tx_TDATA[31:16] != 16'd192 && notif_tx_TDATA[31:16] != 16'd256 && notif_tx_TDATA[31:16] != 16'd320 &&  notif_tx_TDATA[31:16] != 16'd384 && notif_tx_TDATA[31:16] != 16'd448 && notif_tx_TDATA[31:16] != 16'd512 && notif_tx_TDATA[31:16] != 16'd576 &&  notif_tx_TDATA[31:16] != 16'd640 && notif_tx_TDATA[31:16] != 16'd768 &&  notif_tx_TDATA[31:16] != 16'd832 && notif_tx_TDATA[31:16] != 16'd896 &&  notif_tx_TDATA[31:16] != 16'd960 && notif_tx_TDATA[31:16] != 16'd1024 &&
-notif_tx_TDATA[31:16] != 16'd1088 && notif_tx_TDATA[31:16] != 16'd1152 && notif_tx_TDATA[31:16] != 16'd1216
-&& notif_tx_TDATA[31:16] != 16'd1280 && notif_tx_TDATA[31:16] != 16'd1344 && notif_tx_TDATA[31:16] != 16'd1408 && notif_tx_TDATA[31:16] != 16'd1472 && notif_tx_TDATA[31:16] != 16'd1536) begin 
+	if (notif_tx_TVALID == 1'b1 && (notif_tx_TDATA[31:16] % 64 != 0 || notif_tx_TDATA[31:16] < 16'd64 || notif_tx_TDATA[31:16] > 16'd4096)) begin
             // discard rx_data that are larger than 1536B
             // also handle conn_close notification (msg size = 0)
             notif_tx_TREADY = 1'b1;
